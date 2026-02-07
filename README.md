@@ -454,7 +454,7 @@ This project is for educational and personal use. Free to use and modify.
 ## 🙏 Credits
 
 - **Developer:** Prakash Bokarvadiya
-- **AI Model:** Llama 3.3 70B by Meta (via Groq)
+- **AI Model:** MRA 1.5.0 
 - **Authentication:** Google OAuth
 - **Payments:** Razorpay
 - **Database:** MongoDB
