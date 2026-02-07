@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify, render_template, session, redirect, u
 from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import os
+import certifi
+
 from groq import Groq
 import PyPDF2
 from PIL import Image
@@ -63,18 +65,21 @@ MONGO_URI = os.getenv("MONGO_URI")
 
 mongo_client = MongoClient(
     MONGO_URI,
-    serverSelectionTimeoutMS=3000,
-    connectTimeoutMS=3000,
-    socketTimeoutMS=3000,
-    maxPoolSize=10
+    tls=True,
+    tlsCAFile=certifi.where(),
+    serverSelectionTimeoutMS=5000,
+    connectTimeoutMS=5000,
+    socketTimeoutMS=5000,
+    retryWrites=True,
+    maxPoolSize=5
 )
 
-db = mongo_client.get_database("medical_db")
+db = mongo_client["medical_db"]
 
-users_collection = db.users
-chats_collection = db.chats
-reports_collection = db.reports
-subscriptions_collection = db.subscriptions
+users_collection = db["users"]
+chats_collection = db["chats"]
+reports_collection = db["reports"]
+subscriptions_collection = db["subscriptions"]
 
 # Subscription Plans
 PLANS = {
