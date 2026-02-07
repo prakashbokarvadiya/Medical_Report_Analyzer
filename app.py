@@ -58,13 +58,23 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # MongoDB Configuration
-MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017/")
-mongo_client = MongoClient(MONGO_URI)
-db = mongo_client['medical_assistant']
-users_collection = db['users']
-chats_collection = db['chats']
-reports_collection = db['reports']
-subscriptions_collection = db['subscriptions']
+# MongoDB Configuration (Render-safe)
+MONGO_URI = os.getenv("MONGO_URI")
+
+mongo_client = MongoClient(
+    MONGO_URI,
+    serverSelectionTimeoutMS=3000,
+    connectTimeoutMS=3000,
+    socketTimeoutMS=3000,
+    maxPoolSize=10
+)
+
+db = mongo_client.get_database("medical_db")
+
+users_collection = db.users
+chats_collection = db.chats
+reports_collection = db.reports
+subscriptions_collection = db.subscriptions
 
 # Subscription Plans
 PLANS = {
