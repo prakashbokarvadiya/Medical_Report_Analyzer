@@ -61,17 +61,13 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # MongoDB Configuration
 # MongoDB Configuration (Render-safe)
+
 MONGO_URI = os.getenv("MONGO_URI")
 
 mongo_client = MongoClient(
     MONGO_URI,
-    tls=True,
-    tlsCAFile=certifi.where(),
-    serverSelectionTimeoutMS=5000,
-    connectTimeoutMS=5000,
-    socketTimeoutMS=5000,
-    retryWrites=True,
-    maxPoolSize=5
+    serverSelectionTimeoutMS=10000,
+    connectTimeoutMS=10000
 )
 
 db = mongo_client["medical_db"]
